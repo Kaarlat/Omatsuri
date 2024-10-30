@@ -1,0 +1,20 @@
+<h1>Crea tu propio evento</h1>
+<div class="form-card"> 
+    <form id="event-form">
+        <input type="text" id="title" placeholder="Nombre" required>
+        <input type="number" id="priceTicket" placeholder="Costo" required>
+        <input type="number" id="stockTicket" placeholder="Stock" required>
+        <input type="text" id="category" placeholder="Categoría" required>
+        <button type="submit">Agregar</button>
+    </form>
+</div>
+
+<h2>Eventos</h2>
+<div id="event-list" class="event-list">
+    <!-- Las tarjetas de eventos se agregarán aquí dinámicamente -->
+</div>
+
+<!-- Carga de Socket.IO -->
+<script src="/socket.io/socket.io.js"></script>
+<!-- Carga del archivo script.js -->
+<script src="/proyecto/public/script.js"></script>

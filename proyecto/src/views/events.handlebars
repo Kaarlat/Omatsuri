@@ -1,0 +1,11 @@
+<h1>Eventos</h1>
+
+{{#if events}}
+  <ul>
+    {{#each events}}
+      <li>{{this.title}} - {{this.description}}</li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No hay eventos disponibles</p>
+{{/if}}

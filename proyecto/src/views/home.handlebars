@@ -1,0 +1,75 @@
+<!-- Carrusel de imágenes -->
+<div id="eventCarousel" class="carousel slide" data-bs-interval="false">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="row">
+                <div class="col">
+                    <img src="/event1.jpg" class="d-block w-100" alt="Evento 1">
+                </div>
+                <div class="col">
+                    <img src="/event2.png" class="d-block w-100" alt="Evento 2">
+                </div>
+                <div class="col">
+                    <img src="/event3.png" class="d-block w-100" alt="Evento 3">
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="row">
+                <div class="col">
+                    <img src="/event4.jpg" class="d-block w-100" alt="Evento 4">
+                </div>
+                <div class="col">
+                    <img src="/event5.jpg" class="d-block w-100" alt="Evento 5">
+                </div>
+                <div class="col">
+                    <img src="/event6.png" class="d-block w-100" alt="Evento 6">
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="row">
+                <div class="col">
+                    <img src="/event7.jpg" class="d-block w-100" alt="Evento 7">
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#eventCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#eventCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+<div>
+    <h2>Eventos Disponibles</h2>
+
+    <!-- Filtro de Categoría -->
+    <div class="filter-container text-center my-4 event-filter">
+        <select id="category-filter" class="form-select w-50 mx-auto">
+            <option value="">Seleccionar Categoría</option>
+            <option value="Cultural">Cultural</option>
+            <option value="Turismo">Turismo</option>
+            <option value="Infantil">Infantil</option>
+            <option value="Fiestas">Fiestas</option>
+            <option value="Gratuitos">Gratuitos</option>
+            <option value="Gastronómicos">Gastronómicos</option>
+            <option value="Adulto Mayor">Adulto Mayor</option>
+            <option value="Aventura">Aventura</option>
+        </select>
+        <button id="filter-btn" class="btn btn-primary mt-2">Filtrar</button>
+    </div>
+
+    <!-- Contenedor para mostrar los eventos -->
+    <div id="events-container" class="events-list">
+        <!-- eventos filtrados - no se filtran :( si me puede ayudar a entender por qué -->
+    </div>
+
+<!-- Botón para crear evento -->
+<div class="create-event mt-4 text-center">
+    <a href="/realtimeevents" class="btn btn-lg btn-success">CREA TU EVENTO</a>
+</div>
