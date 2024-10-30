@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
     try {
       // Crear un nuevo evento y guardarlo en la base de datos
       const newEvent = new RealTimeEvent(data);
-      await newEvent.save(); // Guardar en la base de datos
+      await newEvent.save();
 
       // Obtener la lista actualizada de eventos
       const events = await RealTimeEvent.find();

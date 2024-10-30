@@ -1,5 +1,3 @@
-// src/routes/cart.js
-
 import express from 'express';
 import { getCart, addProductToCart, removeProductFromCart } from '../controllers/cartController.js';
 

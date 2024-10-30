@@ -1,10 +1,8 @@
-// src/controllers/eventController.js
-
 export const getEvents = async (req, res) => {
     try {
       const events = await Event.find();
       
-      console.log('Datos de eventos:', events); // Esto te ayudará a ver los datos en la consola
+      console.log('Datos de eventos:', events);
       
       res.render('event', { events });
     } catch (error) {

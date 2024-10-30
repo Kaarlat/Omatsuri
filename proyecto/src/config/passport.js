@@ -39,7 +39,7 @@ passport.use('login', new LocalStrategy({
 // Estrategia JWT para verificar el usuario
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'your_jwt_secret', // Cambia esto por un secreto más seguro
+  secretOrKey: 'secret',
 };
 
 passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {

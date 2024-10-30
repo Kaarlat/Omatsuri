@@ -1,5 +1,3 @@
-// src/controllers/cartController.js
-
 import Cart from '../models/cart.js';
 import Event from '../models/event.js';
 

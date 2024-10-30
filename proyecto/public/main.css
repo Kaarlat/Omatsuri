@@ -199,42 +199,42 @@ footer {
 
 /* Estilos para el formulario */
 .form-card {
-    max-width: 400px; /* Ancho máximo del formulario */
-    margin: 50px auto; /* Centrar el formulario */
-    padding: 20px; /* Espaciado interno */
-    border: 1px solid #ddd; /* Borde ligero */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    background-color: #ffffff; /* Fondo blanco */
+    max-width: 400px; 
+    margin: 50px auto;
+    padding: 20px; 
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    background-color: #ffffff; 
 }
 
 .form-card h1 {
-    text-align: center; /* Centrar el título */
-    margin-bottom: 20px; /* Espaciado inferior */
-    color: #333; /* Color del texto */
+    text-align: center; 
+    margin-bottom: 20px; 
+    color: #333; 
 }
 
 .form-card input[type="text"],
 .form-card input[type="number"],
 .form-card button {
-    width: 100%; /* Ocupa el 100% del ancho */
-    padding: 10px; /* Espaciado interno */
-    margin: 10px 0; /* Espaciado vertical */
-    border: 1px solid #ccc; /* Borde ligero */
-    border-radius: 5px; /* Bordes redondeados */
-    font-size: 16px; /* Tamaño de fuente */
+    width: 100%;
+    padding: 10px; 
+    margin: 10px 0; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    font-size: 16px;
 }
 
 .form-card button {
-    background-color: #007bff; /* Color de fondo */
-    color: white; /* Color del texto */
-    border: none; /* Sin borde */
-    cursor: pointer; /* Cursor de mano */
-    transition: background-color 0.3s ease; /* Transición suave */
+    background-color: #007bff; 
+    color: white;
+    border: none; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
 }
 
 .form-card button:hover {
-    background-color: #0056b3; /* Color al pasar el ratón */
+    background-color: #0056b3; 
 }
 
 .events-container {
@@ -342,7 +342,7 @@ body {
 #register-form {
     background-color: #ffffff;
     position: absolute;
-    left: 100%; /* Mueve el formulario de registro fuera de la vista */
+    left: 100%; 
 }
 
 h2 {
