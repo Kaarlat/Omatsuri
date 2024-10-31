@@ -12,10 +12,15 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import authRoutes from './src/routes/auth.js';
 import './src/config/passport.js';
+import usersRouter from './src/routes/users.js';
+import jwtStrategy from './src/passport/jwtStrategy.js';
+import dotenv from 'dotenv';
+import initializePassport from './src/config/passport.js';
 
 // Variables para ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
@@ -41,12 +46,17 @@ app.use(express.static('public'));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use('/api/sessions', authRoutes); 
+initializePassport(passport);
+
+// JWT
+passport.use(jwtStrategy);
 
 
 // Rutas
 app.use('/', viewsRouter); 
 app.use('/', homeRouter);
-app.use('/', userRoutes);
+app.use('/', usersRouter);
+app.use('/', authRoutes);
 
 // Escuchar eventos de Socket.IO
 io.on('connection', (socket) => {

@@ -1,17 +1,21 @@
 import User from '../models/user.js';
 
+// Función para editar el perfil de un usuario
 export const editProfile = async (req, res) => {
     try {
-        const { name, email, description, phone, location } = req.body;
-        const userId = req.user.id; 
+        const { userId } = req.params;
+        const userData = req.body;
 
-        // Actualiza la información del usuario en la base de datos
-        await User.findByIdAndUpdate(userId, { name, email, description, phone, location });
+        // Aquí puedes agregar lógica para buscar el usuario y actualizarlo
+        const updatedUser = await User.findByIdAndUpdate(userId, userData, { new: true });
 
-        // Redirigir o mostrar un mensaje de éxito
-        res.redirect('/'); 
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        return res.status(200).json(updatedUser);
     } catch (error) {
         console.error('Error al editar el perfil:', error);
-        res.status(500).send('Error al editar el perfil');
+        return res.status(500).json({ message: 'Error del servidor' });
     }
 };

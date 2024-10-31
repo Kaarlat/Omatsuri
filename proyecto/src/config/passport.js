@@ -1,55 +1,25 @@
 // src/config/passport.js
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import User from '../models/user.js';
+import User from '../models/user.js'; 
 
-passport.use('register', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-}, async (email, password, done) => {
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      return done(null, false, { message: 'El correo ya está registrado.' });
-    }
-    const newUser = new User({ email, password });
-    await newUser.save();
-    return done(null, newUser);
-  } catch (error) {
-    return done(error);
-  }
-}));
-
-passport.use('login', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password',
-}, async (email, password, done) => {
-  try {
-    const user = await User.findOne({ email });
-    if (!user || !user.comparePassword(password)) {
-      return done(null, false, { message: 'Credenciales incorrectas.' });
-    }
-    return done(null, user);
-  } catch (error) {
-    return done(error);
-  }
-}));
-
-// Estrategia JWT para verificar el usuario
 const opts = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'secret',
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extraer el token del encabezado de autorización
+    secretOrKey: 'SecretKey', 
 };
 
-passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
-  try {
-    const user = await User.findById(jwt_payload.id);
-    if (user) {
-      return done(null, user);
+const strategy = new JwtStrategy(opts, async (payload, done) => {
+    try {
+        const user = await User.findById(payload.id);
+        if (user) {
+            return done(null, user); // Usuario encontrado
+        }
+        return done(null, false); // No se encontró el usuario
+    } catch (error) {
+        return done(error, false); // Error en la búsqueda del usuario
     }
-    return done(null, false);
-  } catch (error) {
-    return done(error, false);
-  }
-}));
+});
+
+// Exportar la función que inicializa Passport con la estrategia
+export default (passport) => {
+    passport.use(strategy);
+};
