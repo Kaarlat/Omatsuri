@@ -23,7 +23,7 @@ const loginUser = async () => {
 
         if (response.status === 200) {
             Swal.fire('¡Éxito!', 'Inicio de sesión exitoso', 'success');
-            // Redirigir o guardar token según sea necesario
+           
         } else {
             Swal.fire('Error', data.message, 'error');
         }

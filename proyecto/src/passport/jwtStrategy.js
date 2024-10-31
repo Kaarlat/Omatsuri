@@ -1,13 +1,13 @@
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
-import User from '../models/user.js'; // Ajusta la ruta según tu estructura de carpetas
+import User from '../models/user.js'; 
 import dotenv from 'dotenv';
 
-dotenv.config(); // Cargar variables de entorno desde .env
+dotenv.config(); 
 
 // Opciones para el extractor de JWT
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET || 'jwtSecretKey', // Cambia esto por tu clave secreta
+    secretOrKey: process.env.JWT_SECRET || 'jwtSecretKey', 
 };
 
 // Definición de la estrategia

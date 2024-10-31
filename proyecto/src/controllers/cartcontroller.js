@@ -33,7 +33,7 @@ export const addProductToCart = async (req, res) => {
     if (existingProductIndex !== -1) {
       cart.products[existingProductIndex].quantity += 1; // Si ya está, aumentar la cantidad
     } else {
-      cart.products.push({ product: event._id, quantity: 1 }); // Si no, agregar nuevo
+      cart.products.push({ product: event._id, quantity: 1 }); 
     }
 
     // Recalcular el precio total
@@ -58,7 +58,7 @@ export const removeProductFromCart = async (req, res) => {
     const productIndex = cart.products.findIndex(p => p.product.equals(req.body.eventId));
     if (productIndex !== -1) {
       const event = await Event.findById(cart.products[productIndex].product);
-      cart.totalPrice -= event.priceTicket * cart.products[productIndex].quantity; // Restar el precio
+      cart.totalPrice -= event.priceTicket * cart.products[productIndex].quantity; 
 
       cart.products.splice(productIndex, 1); // Eliminar el producto
       await cart.save();
