@@ -35,7 +35,28 @@ router.get('/sessions/login', (req, res) => {
 });
 
 // Rutas para manejar registro e inicio de sesión
-router.post('/sessions/register', registerUser); // Maneja la creación de un nuevo usuario
-router.post('/sessions/login', loginUser); // Maneja el inicio de sesión del usuario
+router.post('/sessions/register', registerUser); 
+router.post('/sessions/login', loginUser); 
+
+// Manejo de cookies
+router.get('/setCookie', (req, res) => {
+    res.cookie('userSession', 'cookie123', { maxAge: 3600000, signed: true });
+    res.send('Cookie seteada en la ruta /setcookie');
+});
+
+router.get('/getCookie', (req, res) => {
+    const userSession = req.cookies.userSession;
+    if (userSession) {
+        res.send(`Cookie encontrada: ${userSession}`);
+    } else {
+        res.send('No hay cookies con el nombre especificado');
+    }
+});
+
+router.get('/deleteCookie', (req, res) => {
+    res.clearCookie('userSession');
+    res.send('Cookie eliminada');
+});
 
 export default router;
+

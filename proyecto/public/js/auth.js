@@ -22,13 +22,29 @@ const loginUser = async () => {
         const data = await response.json();
 
         if (response.status === 200) {
-            Swal.fire('¡Éxito!', 'Inicio de sesión exitoso', 'success');
-           
+            // Si el inicio de sesión es exitoso
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'Inicio de sesión exitoso',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
         } else {
-            Swal.fire('Error', data.message, 'error');
+            // Si el inicio de sesión falla
+            Swal.fire({
+                title: 'Error',
+                text: data.message,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
         }
     } catch (error) {
-        Swal.fire('Error', 'Error en el servidor', 'error');
+        Swal.fire({
+            title: 'Error',
+            text: 'Error en el servidor',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
     }
 };
 
@@ -50,13 +66,30 @@ const registerUser = async () => {
         const data = await response.json();
 
         if (response.status === 201) {
-            Swal.fire('¡Registrado!', 'Usuario registrado con éxito', 'success');
-            // Cambiar a la vista de login
+            // Si el registro es exitoso
+            Swal.fire({
+                title: '¡Registrado!',
+                text: 'Usuario registrado con éxito',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            // Cambiar a la vista de login sin redirigir
             document.querySelector('.container').classList.remove('active-panel');
         } else {
-            Swal.fire('Error', data.message, 'error');
+            // Si el registro falla
+            Swal.fire({
+                title: 'Error',
+                text: data.message,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
         }
     } catch (error) {
-        Swal.fire('Error', 'Error en el servidor', 'error');
+        Swal.fire({
+            title: 'Error',
+            text: 'Error en el servidor',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
     }
 };
