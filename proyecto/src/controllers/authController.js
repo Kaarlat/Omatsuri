@@ -7,7 +7,7 @@ import Cart from '../models/cart.js';
 // Registro de usuario
 export const registerUser = async (req, res) => {
     try {
-        const { first_name, last_name, email, age, password } = req.body;
+        const { first_name, email, password } = req.body;
 
         // Verificar si el email ya está registrado
         const existingUser = await User.findOne({ email });

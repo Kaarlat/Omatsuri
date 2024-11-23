@@ -6,7 +6,6 @@ export const editProfile = async (req, res) => {
         const { userId } = req.params;
         const userData = req.body;
 
-        // Aquí puedes agregar lógica para buscar el usuario y actualizarlo
         const updatedUser = await User.findByIdAndUpdate(userId, userData, { new: true });
 
         if (!updatedUser) {

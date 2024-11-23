@@ -10,13 +10,14 @@ import homeRouter from './src/routes/home.js';
 import RealTimeEvent from './src/models/realTimeEvent.js'
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
-import authRoutes from './src/routes/auth.js';
+import sessionsRouter from './src/routes/sessions.js';
 import './src/config/passport.js';
 import usersRouter from './src/routes/users.js';
 import jwtStrategy from './src/passport/jwtStrategy.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import initializePassport from './src/config/passport.js';
+import { helpers } from './src/helpers/handlebars.js';
 
 // Variables
 const __filename = fileURLToPath(import.meta.url);
@@ -34,14 +35,34 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.log('Error al conectar a MongoDB:', err));
 
 // Handlebars
-app.engine('handlebars', engine());  
+app.engine('handlebars', engine({
+    helpers: helpers,
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true
+    }
+}));  
 app.set('view engine', 'handlebars');
 app.set('views', join(__dirname, 'src', 'views')); 
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); 
+app.use(express.static(join(__dirname, 'public')));
+
+// Add JSON error handling middleware
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    console.error('JSON Parse Error:', err);
+    console.error('Request Body:', req.body);
+    return res.status(400).json({ 
+      status: 400,
+      message: 'Invalid JSON format',
+      error: err.message 
+    });
+  }
+  next();
+});
 
 // Configuración de cookies y autenticación
 app.use(cookieParser("Coder123"));
@@ -56,15 +77,14 @@ app.use(session({
 }));
 
 // JWT y Passport
-app.use('/api/sessions', authRoutes); 
 initializePassport(passport);
 passport.use(jwtStrategy);
 
 // Rutas
+app.use('/sessions', sessionsRouter);
 app.use('/', viewsRouter); 
 app.use('/', homeRouter);
 app.use('/', usersRouter);
-app.use('/', authRoutes);
 
 // Middleware para contar visitas y manejar mensajes personalizados
 app.get('/', (req, res) => {
@@ -89,7 +109,6 @@ app.get('/', (req, res) => {
   }
 });
 
-// Escuchar eventos de Socket.IO
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
@@ -97,16 +116,23 @@ io.on('connection', (socket) => {
   socket.on('createEvent', async (data) => {
     try {
       // Crear un nuevo evento y guardarlo en la base de datos
-      const newEvent = new RealTimeEvent(data);
+      const newEvent = new RealTimeEvent({
+        title: data.title,
+        priceTicket: data.priceTicket,
+        stockTicket: data.stockTicket,
+        category: data.category,
+        date: data.date
+      });
       await newEvent.save();
 
       // Obtener la lista actualizada de eventos
-      const events = await RealTimeEvent.find();
+      const events = await RealTimeEvent.find().sort({ date: -1 });
 
       // Emitir la lista de eventos actualizada a todos los clientes
       io.emit('productList', events);
     } catch (error) {
       console.error('Error al crear el evento:', error);
+      socket.emit('error', { message: 'Error al crear el evento' });
     }
   });
 
@@ -117,12 +143,13 @@ io.on('connection', (socket) => {
       await RealTimeEvent.findByIdAndDelete(id);
 
       // Obtener la lista actualizada de eventos
-      const events = await RealTimeEvent.find();
+      const events = await RealTimeEvent.find().sort({ date: -1 });
 
       // Emitir la lista de eventos actualizada a todos los clientes
       io.emit('productList', events);
     } catch (error) {
       console.error('Error al eliminar el evento:', error);
+      socket.emit('error', { message: 'Error al eliminar el evento' });
     }
   });
 
@@ -132,7 +159,7 @@ io.on('connection', (socket) => {
 });
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 server.listen(PORT, () => {
   console.log(`Servidor arriba en el puerto: ${PORT}`);
 });

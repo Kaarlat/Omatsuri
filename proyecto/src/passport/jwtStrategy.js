@@ -1,33 +1,23 @@
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import User from '../models/user.js'; 
-import dotenv from 'dotenv';
 
-dotenv.config(); 
-
-// Opciones para el extractor de JWT
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET || 'jwtSecretKey', 
+    secretOrKey: process.env.JWT_SECRET || 'defaultSecretKey',
 };
 
-// Definición de la estrategia
-const jwtStrategy = new JwtStrategy(opts, async (jwt_payload, done) => {
+const strategy = new JwtStrategy(opts, async (payload, done) => {
     try {
-        // Buscar al usuario en la base de datos usando el ID del payload
-        const user = await User.findById(jwt_payload.id);
-
-        // Si se encuentra el usuario, retornar el usuario, sino, retornar false
+        const user = await User.findById(payload.id);
         if (user) {
             return done(null, user);
-        } else {
-            return done(null, false);
         }
+        return done(null, false);
     } catch (error) {
         return done(error, false);
     }
 });
 
-// Exportar la estrategia
 export default (passport) => {
-    passport.use(jwtStrategy);
+    passport.use(strategy);
 };

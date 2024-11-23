@@ -1,17 +1,12 @@
 import express from 'express';
-import RealTimeEvent from '../models/realTimeEvent.js';
+import Evento from '../models/evento.js';
 
 const router = express.Router();
 
-// Ruta para crear un nuevo evento
-router.post('/create', async (req, res) => {
-    try {
-        const newEvent = new RealTimeEvent(req.body);
-        await newEvent.save();
-        res.status(201).json(newEvent);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al crear el evento', error });
-    }
+router.post('/', async (req, res) => {
+  const evento = new Evento(req.body);
+  await evento.save();
+  res.json(evento);
 });
 
 // Ruta para eliminar un evento

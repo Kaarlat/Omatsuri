@@ -7,30 +7,33 @@ document.getElementById('signInBtn').addEventListener('click', () => {
     document.querySelector('.container').classList.remove('active-panel');
 });
 
-// Función para iniciar sesión
-const loginUser = async () => {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+// Función para registrar un usuario
+const registerUser = async () => {
+    const firstName = document.getElementById('firstName').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
 
     try {
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('/sessions/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ name: firstName, email, password })
         });
 
         const data = await response.json();
 
-        if (response.status === 200) {
-            // Si el inicio de sesión es exitoso
+        if (response.status === 201) {
+            // Si el registro es exitoso
             Swal.fire({
-                title: '¡Éxito!',
-                text: 'Inicio de sesión exitoso',
+                title: '¡Registrado!',
+                text: 'Usuario registrado con éxito',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
             });
+            // Redirigir a la página principal
+            window.location.href = '/';
         } else {
-            // Si el inicio de sesión falla
+            // Si el registro falla
             Swal.fire({
                 title: 'Error',
                 text: data.message,
@@ -48,35 +51,33 @@ const loginUser = async () => {
     }
 };
 
-// Función para registrar un usuario
-const registerUser = async () => {
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const email = document.getElementById('registerEmail').value;
-    const age = document.getElementById('age').value;
-    const password = document.getElementById('registerPassword').value;
+// Función para iniciar sesión
+const loginUser = async () => {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
     try {
-        const response = await fetch('/api/auth/register', {
+        const response = await fetch('/sessions/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ first_name: firstName, last_name: lastName, email, age, password })
+            body: JSON.stringify({ email, password })
         });
 
         const data = await response.json();
 
-        if (response.status === 201) {
-            // Si el registro es exitoso
+        if (response.status === 200) {
+            // Si el inicio de sesión es exitoso
             Swal.fire({
-                title: '¡Registrado!',
-                text: 'Usuario registrado con éxito',
+                title: '¡Éxito!',
+                text: 'Inicio de sesión exitoso',
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
+            }).then(() => {
+                // Redirigir a la página principal
+                window.location.href = '/';
             });
-            // Cambiar a la vista de login sin redirigir
-            document.querySelector('.container').classList.remove('active-panel');
         } else {
-            // Si el registro falla
+            // Si el inicio de sesión falla
             Swal.fire({
                 title: 'Error',
                 text: data.message,

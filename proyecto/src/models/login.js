@@ -3,10 +3,8 @@ import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    age: { type: Number, required: true }
+    password: { type: String, required: true }
 });
 
 // Método para encriptar la contraseña
