@@ -371,28 +371,6 @@ header {
     color: #fff;
 }
 
-/* Pagination */
-#pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    margin-top: 20px;
-}
-
-#pagination button {
-    background-color: #ffa500;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-#pagination button:hover {
-    background-color: #ff4500;
-}
-
 /* Footer */
 footer {
     background-color: #000000;

@@ -11,13 +11,16 @@ import RealTimeEvent from './src/models/realTimeEvent.js'
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import sessionsRouter from './src/routes/sessions.js';
-import './src/config/passport.js';
 import usersRouter from './src/routes/users.js';
 import jwtStrategy from './src/passport/jwtStrategy.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
 import initializePassport from './src/config/passport.js';
 import { helpers } from './src/helpers/handlebars.js';
+import config from './src/config/config.js';
+import errorHandler from './src/middlewares/errorHandler.js';
+import loggerMiddleware from './src/middlewares/loggerMidleware.js';
+import mocksRouter from './src/routes/mocks.router.js';
 
 // Variables
 const __filename = fileURLToPath(import.meta.url);
@@ -49,6 +52,8 @@ app.set('views', join(__dirname, 'src', 'views'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(join(__dirname, 'public')));
+app.use(errorHandler);
+app.use(loggerMiddleware);
 
 // Add JSON error handling middleware
 app.use((err, req, res, next) => {
@@ -81,19 +86,16 @@ initializePassport(passport);
 passport.use(jwtStrategy);
 
 // Rutas
-app.use('/sessions', sessionsRouter);
-app.use('/', viewsRouter); 
-app.use('/', homeRouter);
-app.use('/', usersRouter);
+app.use('/', viewsRouter);
+app.use('/session', sessionsRouter);
+app.use('/user', usersRouter);
+app.use('/api/mocks', mocksRouter);
 
 // Middleware para contar visitas y manejar mensajes personalizados
-app.get('/', (req, res) => {
+app.get('/', homeRouter, (req, res) => {
   // Verificar si es la primera visita
   if (!req.session.visits) {
-    req.session.visits = 1; // Iniciar contador de visitas
-    res.send('Te damos la bienvenida');
-  } else {
-    req.session.visits += 1; // Incrementar contador de visitas
+       req.session.visits += 1; // Incrementar contador de visitas
     const userName = req.query.name || req.session.name; 
 
     if (req.query.name) {
@@ -159,6 +161,7 @@ io.on('connection', (socket) => {
 });
 
 // Iniciar el servidor
+console.log(config);
 const PORT = 8080;
 server.listen(PORT, () => {
   console.log(`Servidor arriba en el puerto: ${PORT}`);

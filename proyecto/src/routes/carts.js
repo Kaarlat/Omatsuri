@@ -1,5 +1,5 @@
 import express from 'express';
-import { Cart, Ticket } from '../models/cart.js';
+import { Cart, Ticket } from '../dao/models/cart.model.js';
 import { finalizePurchase } from '../controllers/cart.controller.js';
 import { isUser, checkSession } from '../middlewares/auth.middleware.js';
 

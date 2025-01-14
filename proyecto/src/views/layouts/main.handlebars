@@ -38,15 +38,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/cart" id="cart-link">Carrito (<span id="cart-count">0</span>)</a>
+                    <a href="/carts" id="cart-link">Carrito (<span id="cart-count">0</span>)</a>
                 </li>
                 <li>
-                    <a href="sessions/login" class="login-button">
+                    <a href="/login" class="login-button">
                         <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                     </a>
                 </li>
                 <li>
-                    <a href="sessions/register" class="register-button">
+                    <a href="/register" class="register-button">
                         <i class="fas fa-user-plus"></i> Registrarse
                     </a>
                 </li>
@@ -56,12 +56,6 @@
 
     <main>
         {{{body}}}
-        <div id="events-container" class="row"></div>
-        <div id="pagination">
-            <button id="prev-page" class="btn btn-secondary" onclick="fetchEvents(currentPage - 1)">Anterior</button>
-            <span id="page-info"></span>
-            <button id="next-page" class="btn btn-secondary" onclick="fetchEvents(currentPage + 1)">Siguiente</button>
-        </div>
     </main>
 
     <footer>

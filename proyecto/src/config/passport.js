@@ -1,6 +1,10 @@
 // src/config/passport.js
+import dotenv from 'dotenv';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import User from '../models/user.js'; 
+import { mongo } from 'mongoose';
+
+dotenv.config(); 
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extraer el token del encabezado de autorización
@@ -23,3 +27,10 @@ const strategy = new JwtStrategy(opts, async (payload, done) => {
 export default (passport) => {
     passport.use(strategy);
 };
+
+// export default {
+//     port: process.env.PORT,
+//     mongoUrl: process.env.MONGO_URL,
+//     adminName: process.env.ADMIN_NAME,
+//     adminPassword: process.env.ADMIN_PASSWORD
+// }

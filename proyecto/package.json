@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^9.3.0",
     "alert": "^6.0.2",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",
+    "commander": "^13.0.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.7",
@@ -32,12 +34,14 @@
     "passport-local": "^1.0.0",
     "socket.io": "^4.8.1",
     "sweet": "^0.1.1",
-    "sweetalert2": "^11.6.13"
+    "sweetalert2": "^11.6.13",
+    "winston": "^3.17.0"
   },
   "type": "module",
   "devDependencies": {
     "chai": "^5.1.2",
     "mocha": "^10.8.2",
+    "sinon": "^19.0.2",
     "supertest": "^7.0.0"
   }
 }

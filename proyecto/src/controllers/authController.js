@@ -79,3 +79,30 @@ export const getCurrentUser = (req, res) => {
         user: req.user 
     });
 };
+
+export function login(user, password) {
+    if (!user) {
+        console.log('No se ha proporcionado un usuario');
+        return;
+    }
+
+    if (!password) {
+        console.log('No se ha proporcionado un password');
+        return;
+    }
+
+    const hardcodedUser = 'coderUser';
+    const hardcodedPassword = '123';
+
+    if (user !== hardcodedUser) {
+        console.log('Credenciales incorrectas');
+        return;
+    }
+
+    if (password !== hardcodedPassword) {
+        console.log('Contraseña incorrecta');
+        return;
+    }
+
+    console.log('logueado');
+}

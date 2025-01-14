@@ -1,4 +1,4 @@
-import Cart from '../models/cart.js';
+import Cart from '../dao/models/cart.model.js';
 import Event from '../models/event.js';
 
 // Obtener el carrito
