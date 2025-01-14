@@ -124,6 +124,17 @@ header {
     color: #ffffff;
 }
 
+/* Carrusel */
+.carousel-inner img {
+    height: 300px; 
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.carousel-inner .col-md-4 {
+    min-height: 300px; 
+}
+
 /* Cards responsive */
 .events-container {
     display: flex;
@@ -194,6 +205,7 @@ header {
 }
 
 /* Filtros de eventos */
+
 .filters {
     background-color: #333;
     padding: 1.5rem;
@@ -225,49 +237,6 @@ header {
     border-color: #ffa500;
 }
 
-/* Formulario de creación de eventos */
-.event-form {
-    background-color: #333;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    max-width: 800px;
-    margin: 20px auto;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #ffa500;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #444;
-    border: 1px solid #555;
-    border-radius: 5px;
-    color: #d7c6c6;
-    font-size: 1rem;
-}
-
-.form-group textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    outline: none;
-    border-color: #ffa500;
-}
 
 /* Botones */
 .btn-event {
@@ -328,6 +297,80 @@ header {
     color: #d7c6c6;
 }
 
+/*realtimeevents*/
+/* Contenedor del formulario */
+.form-card {
+    width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #444; /* Fondo gris oscuro */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.form-card form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-card input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #222; /* Fondo más oscuro para los inputs */
+    color: white;
+}
+
+.form-card input:focus {
+    outline: none;
+    border-color: #ffa500; /* Naranja al hacer foco */
+}
+
+/* Estilo del botón */
+.form-card button {
+    padding: 10px 20px;
+    background-color: #ffa500; /* Naranja */
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto de hover para el botón */
+.form-card button:hover {
+    background-color: #ff4500; /* Naranja oscuro */
+    transform: translateY(-2px); /* Levanta ligeramente el botón */
+}
+
+/* Estilo para la lista de eventos */
+.event-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.event-item {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px;
+    width: 200px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.event-item h3 {
+    color: #ffa500;
+    text-align: center;
+}
+
+.event-item p {
+    color: #fff;
+}
+
 /* Pagination */
 #pagination {
     display: flex;
@@ -374,192 +417,28 @@ footer {
     margin: 20px; 
     padding: 20px;
     border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
 }
 
-.form-card h2 {
-    text-align: center;
+/*carrito*/
+.cart-item {
+    background-color: #fff;
+    transition: background-color 0.2s;
 }
 
-.form-card input[type="text"], .form-card input[type="password"], .form-card input[type="number"], .form-card button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.cart-item:hover {
+    background-color: #f8f9fa;
 }
 
-.form-card button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-.form-card button:hover {
-    background-color: #0056b3;
-}
-
-/* Para pantallas pequeñas */
-@media (max-width: 600px) {
-    .form-card {
-        width: 90%; 
-    }
-}
-
-/* Carousel */
-.carousel-inner {
-    padding: 20px 0;
-    background-color: #000000;
-}
-
-.carousel-inner img {
-    width: 100%;
-    height: auto;
-}
-
-.carousel-item img {
-    height: 400px;
-    object-fit: cover;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: rgba(255, 255, 255, 0.5);
-}
-
-.carousel-control-prev:hover .carousel-control-prev-icon,
-.carousel-control-next:hover .carousel-control-next-icon {
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-/* Pantallas pequeñas */
-@media (max-width: 600px) {
-    .event-card {
-        width: 100%;
-    }
-
-    .create-event .btn {
-        width: 100%;
-        font-size: 1rem;
-    }
-
-    #pagination {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #pagination button {
-        margin-bottom: 10px;
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .event-header {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .filter-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .events-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* login.css */
-html, body {
-    height: 100%;
-    margin: 0;
-    background-color: #000;
-    font-family: Arial, sans-serif;
-    color: #d7c6c6;
-}
-
-.container {
+.quantity {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100%;
-}
-
-.card {
-    background-color: #333;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: row;
-    width: 80%; 
-    max-width: 800px; 
-}
-
-/* Form Container */
-.forms-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-.form {
-    flex: 1;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.form h2 {
-    margin-bottom: 20px;
-}
-
-.form input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-}
-
-.form button {
-    background-color: #ffa500;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    width: 100%;
-}
-
-.form button:hover {
-    background-color: #ff4500;
-}
-
-/* Panel Container */
-.panel-container {
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
 }
 
-.panel {
-    margin: 10px 0;
+.btn-outline-secondary {
+    padding: 0.25rem 0.5rem;
 }
 
-/* Buttons in Panel */
-.btn {
-    background-color: #555;
+.fa-trash {
     color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: #ffa500;
 }

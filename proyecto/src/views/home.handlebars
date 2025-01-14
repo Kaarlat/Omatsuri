@@ -40,79 +40,52 @@
     </div>
 </div>
 
-<div class="container">
-    {{!-- Filtros y Título --}}
-    <div class="row mb-4">
-        <div class="col-12 col-md-4 mb-3 mb-md-0">
-            <h2 class="h3 mb-0">Eventos Disponibles</h2>
-        </div>
-        <div class="col-12 col-md-4 mb-3 mb-md-0">
-            <div class="input-group">
-                <span class="input-group-text">
-                    <i class="fas fa-filter"></i>
-                </span>
-                <select id="category-filter" class="form-select" name="category">
-                    <option value="">Todas las categorías</option>
-                    {{#each categories}}
-                        <option value="{{this}}" {{#if (eq ../selectedCategory this)}}selected{{/if}}>
-                            {{capitalize this}}
-                        </option>
-                    {{/each}}
+{{!-- Filtros y Botones --}}
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="d-flex align-items-center">
+                <select id="categoryFilter" class="form-select me-4">
+                    <option value="all">Todas</option>
+                    <option value="cultural">Cultural</option>
+                    <option value="deportivo">Deportivo</option>
+                    <option value="economico">Económico</option>
+                    <option value="concierto">Concierto</option>
+                    <option value="gratuitos">Gratuitos</option>
+                    <option value="gastronomicos">Gastronómicos</option>
+                    <option value="adulto_mayor">Adulto Mayor</option>
+                    <option value="aventura">Aventura</option>
                 </select>
+                <button id="search-btn" class="btn btn-orange">Buscar</button>
             </div>
         </div>
-        <div class="col-12 col-md-4 text-md-end">
-            <a href="/realtimeevents" class="btn btn-success w-100 w-md-auto">
+        <div class="col-md-3 text-end">
+            <a href="/realtimeevents" class="btn btn-success">
                 <i class="fas fa-plus-circle"></i> Crear Evento
             </a>
-            <span id="cart-counter" class="badge bg-primary ms-2" style="display: none;">0</span>
         </div>
     </div>
+</div>
 
-    {{!-- Carrusel de Cards de Eventos --}}
-    {{#if events.length}}
-        <div id="eventsCarousel" class="carousel slide" data-bs-ride="carousel">
+{{!-- Carrusel de Cards de Eventos --}}
+<div class="container">
+    {{#if filteredEvents.length}}
+        <div id="filteredEventsCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                {{#each events}}
+                {{#each filteredEvents}}
                     {{#if (isFirstInGroup @index 3)}}
                         <div class="carousel-item {{#if (eq @index 0)}}active{{/if}}">
                             <div class="row">
                     {{/if}}
                     
-                    <div class="col-md-4 mb-4">
-                        <div class="card event-card h-100 shadow-hover">
+                    <div class="col-md-4">
+                        <div class="card event-card">
                             <div class="card-body">
-                                <h5 class="card-title event-title">
-                                    <i class="fas fa-star text-warning me-2"></i>
-                                    {{this.title}}
-                                </h5>
-                                <p class="card-text event-location">
-                                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
-                                    <span class="location-text">{{this.location.venue}}</span>
-                                </p>
-                                <p class="card-text event-date">
-                                    <i class="fas fa-calendar text-primary me-2"></i>
-                                    <span class="date-text">{{formatDate this.date}}</span>
-                                </p>
-                                <p class="card-text event-category">
-                                    <i class="fas fa-tag text-info me-2"></i>
-                                    <span class="category-text">{{capitalize this.category}}</span>
-                                </p>
-                                <p class="card-text event-price">
-                                    <i class="fas fa-dollar-sign text-success me-2"></i>
-                                    <span class="price-text">
-                                        {{#if this.price}}
-                                            ${{this.price}}
-                                        {{else}}
-                                            Gratis
-                                        {{/if}}
-                                    </span>
-                                </p>
-                                <div class="d-grid">
-                                    <button class="btn btn-primary add-to-cart" data-event-id="{{this._id}}">
-                                        <i class="fas fa-shopping-cart"></i> Añadir al Carrito
-                                    </button>
-                                </div>
+                                <h5 class="card-title">{{this.title}}</h5>
+                                <p class="card-text">{{this.location.venue}}</p>
+                                <p class="card-text">{{this.date}}</p>
+                                <p class="card-text">{{this.category}}</p>
+                                <button class="btn btn-primary">Añadir al carrito</button>
                             </div>
                         </div>
                     </div>
@@ -123,286 +96,8 @@
                     {{/if}}
                 {{/each}}
             </div>
-            
-            {{#if (moreThanThree events)}}
-                <button class="carousel-control-prev" type="button" data-bs-target="#eventsCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#eventsCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
-            {{/if}}
         </div>
     {{else}}
-        <div class="alert alert-info">
-            No hay eventos disponibles en este momento.
-        </div>
+        <div class="alert alert-info">No hay eventos para esta categoría.</div>
     {{/if}}
 </div>
-
-{{!-- Estilos específicos --}}
-<style>
-.event-card {
-    width: 100%;
-    max-width: 350px;
-    margin: 10px auto;
-    padding: 0;
-    border: none;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.card-body {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.card-title {
-    font-size: 1.2rem;
-    color: #FF5733;
-    font-weight: 600;
-    margin: 0;
-    padding: 0 0 5px 0;
-}
-
-.card-text {
-    font-size: 0.95rem;
-    margin: 0;
-    padding: 5px 0;
-}
-
-.card-text i {
-    width: 20px;
-    margin-right: 8px;
-}
-
-.event-location .location-text,
-.event-category .category-text {
-    color: #FF5733;
-}
-
-.event-price .price-text {
-    color: #28a745;
-    font-weight: 600;
-}
-
-.btn-primary {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #FF5733;
-    border-color: #FF5733;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #E64A2E;
-    border-color: #E64A2E;
-    transform: translateY(-2px);
-}
-
-#eventsCarousel {
-    padding: 20px 40px;
-    margin-top: 20px;
-}
-
-.carousel-item .row {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px;
-    padding: 10px;
-}
-
-.col-md-4 {
-    display: flex;
-    justify-content: center;
-    padding: 0 10px;
-}
-
-#eventsCarousel .carousel-control-prev,
-#eventsCarousel .carousel-control-next {
-    width: 40px;
-    height: 40px;
-    background-color: #FF5733;
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.8;
-}
-
-#eventsCarousel .carousel-control-prev {
-    left: -5px;
-}
-
-#eventsCarousel .carousel-control-next {
-    right: -5px;
-}
-
-@media (max-width: 768px) {
-    .event-card {
-        max-width: 300px;
-    }
-
-    .card-body {
-        padding: 12px;
-        gap: 8px;
-    }
-
-    .card-title {
-        font-size: 1.1rem;
-    }
-
-    .card-text {
-        font-size: 0.9rem;
-    }
-
-    #eventsCarousel {
-        padding: 15px;
-    }
-
-    .carousel-item .row {
-        gap: 15px;
-        padding: 5px;
-    }
-
-    #eventsCarousel .carousel-control-prev,
-    #eventsCarousel .carousel-control-next {
-        display: none;
-    }
-}
-
-/* Asegurar que las cards mantengan su forma en todas las situaciones */
-.carousel-item.active .row {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.carousel-item.active .col-md-4 {
-    flex: 0 0 auto;
-    width: calc(33.333% - 20px);
-    margin-bottom: 20px;
-}
-
-@media (max-width: 992px) {
-    .carousel-item.active .col-md-4 {
-        width: calc(50% - 20px);
-    }
-}
-
-@media (max-width: 576px) {
-    .carousel-item.active .col-md-4 {
-        width: 100%;
-        margin-bottom: 15px;
-    }
-}
-</style>
-
-{{!-- Scripts específicos --}}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Manejo del filtro de categorías
-    const categoryFilter = document.getElementById('category-filter');
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', function() {
-            const selectedCategory = this.value;
-            const currentUrl = new URL(window.location.href);
-            
-            if (selectedCategory) {
-                currentUrl.searchParams.set('category', selectedCategory);
-            } else {
-                currentUrl.searchParams.delete('category');
-            }
-            
-            window.location.href = currentUrl.toString();
-        });
-    }
-
-    // Manejo de añadir al carrito
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', async function() {
-            const eventId = this.dataset.eventId;
-            try {
-                const response = await fetch('/cart/add', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ eventId })
-                });
-                
-                if (response.ok) {
-                    // Actualizar el contador del carrito
-                    const cartCounter = document.getElementById('cart-counter');
-                    if (cartCounter) {
-                        const currentCount = parseInt(cartCounter.textContent || '0');
-                        cartCounter.textContent = currentCount + 1;
-                        cartCounter.style.display = 'inline';
-                    }
-                    
-                    // Mostrar mensaje de éxito
-                    const toast = document.createElement('div');
-                    toast.className = 'toast-notification';
-                    toast.textContent = 'Evento añadido al carrito exitosamente';
-                    document.body.appendChild(toast);
-                    
-                    // Animar y remover el toast
-                    setTimeout(() => {
-                        toast.classList.add('show');
-                        setTimeout(() => {
-                            toast.classList.remove('show');
-                            setTimeout(() => {
-                                toast.remove();
-                            }, 300);
-                        }, 2000);
-                    }, 100);
-                } else {
-                    const data = await response.json();
-                    alert(data.message || 'Error al añadir al carrito');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al añadir al carrito');
-            }
-        });
-    });
-
-    // Inicializar el carrusel con la configuración deseada
-    const eventsCarousel = new bootstrap.Carousel(document.getElementById('eventsCarousel'), {
-        interval: 5000,
-        wrap: true,
-        touch: true
-    });
-});
-
-// Estilos para las notificaciones toast
-const style = document.createElement('style');
-style.textContent = `
-    .toast-notification {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #FF5733;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        opacity: 0;
-        transform: translateY(100%);
-        transition: all 0.3s ease;
-        z-index: 1000;
-    }
-    
-    .toast-notification.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-`;
-document.head.appendChild(style);
-</script>
