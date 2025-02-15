@@ -12,6 +12,7 @@ import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import sessionsRouter from './src/routes/sessions.js';
 import usersRouter from './src/routes/users.js';
+import cartsRouter from './src/routes/carts.js';
 import jwtStrategy from './src/passport/jwtStrategy.js';
 import dotenv from 'dotenv';
 import session from 'express-session';
@@ -21,6 +22,8 @@ import config from './src/config/config.js';
 import errorHandler from './src/middlewares/errorHandler.js';
 import loggerMiddleware from './src/middlewares/loggerMidleware.js';
 import mocksRouter from './src/routes/mocks.router.js';
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 // Variables
 const __filename = fileURLToPath(import.meta.url);
@@ -36,6 +39,27 @@ const mongoUri = 'mongodb+srv://Omatsuri:Coder123@cluster0.d4t0t.mongodb.net/';
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Conexión exitosa a MongoDB'))
   .catch(err => console.log('Error al conectar a MongoDB:', err));
+
+// Swagger setup
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Omatsuri API',
+      version: '1.0.0',
+      description: 'API documentation for Omatsuri project',
+    },
+    servers: [
+      {
+        url: 'http://localhost:8080',
+      },
+    ],
+  },
+  apis: ['./src/routes/*.js'], // Ruta a tus archivos de rutas
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Handlebars
 app.engine('handlebars', engine({
@@ -90,75 +114,8 @@ app.use('/', viewsRouter);
 app.use('/session', sessionsRouter);
 app.use('/user', usersRouter);
 app.use('/api/mocks', mocksRouter);
-
-// Middleware para contar visitas y manejar mensajes personalizados
-app.get('/', homeRouter, (req, res) => {
-  // Verificar si es la primera visita
-  if (!req.session.visits) {
-       req.session.visits += 1; // Incrementar contador de visitas
-    const userName = req.query.name || req.session.name; 
-
-    if (req.query.name) {
-      req.session.name = req.query.name;
-    }
-
-    // Enviar mensaje dependiendo de si hay un nombre o no
-    if (userName) {
-      res.send(`${userName} visitaste la página ${req.session.visits} veces`);
-    } else {
-      res.send(`Visitaste la página ${req.session.visits} veces`);
-    }
-  }
-});
-
-io.on('connection', (socket) => {
-  console.log('Nuevo cliente conectado');
-
-  // Manejar la creación de eventos
-  socket.on('createEvent', async (data) => {
-    try {
-      // Crear un nuevo evento y guardarlo en la base de datos
-      const newEvent = new RealTimeEvent({
-        title: data.title,
-        priceTicket: data.priceTicket,
-        stockTicket: data.stockTicket,
-        category: data.category,
-        date: data.date
-      });
-      await newEvent.save();
-
-      // Obtener la lista actualizada de eventos
-      const events = await RealTimeEvent.find().sort({ date: -1 });
-
-      // Emitir la lista de eventos actualizada a todos los clientes
-      io.emit('productList', events);
-    } catch (error) {
-      console.error('Error al crear el evento:', error);
-      socket.emit('error', { message: 'Error al crear el evento' });
-    }
-  });
-
-  // Manejar la eliminación de eventos
-  socket.on('deleteProduct', async (id) => {
-    try {
-      // Eliminar el evento de la base de datos
-      await RealTimeEvent.findByIdAndDelete(id);
-
-      // Obtener la lista actualizada de eventos
-      const events = await RealTimeEvent.find().sort({ date: -1 });
-
-      // Emitir la lista de eventos actualizada a todos los clientes
-      io.emit('productList', events);
-    } catch (error) {
-      console.error('Error al eliminar el evento:', error);
-      socket.emit('error', { message: 'Error al eliminar el evento' });
-    }
-  });
-
-  socket.on('disconnect', () => {
-    console.log('Cliente desconectado');
-  });
-});
+app.use('/events', viewsRouter);
+app.use('/carts', cartsRouter);
 
 // Iniciar el servidor
 console.log(config);

@@ -1,65 +1,144 @@
 import express from 'express';
-import Event from '../models/event.js';
+import homeRouter from './home.js';
+import usersRouter from './users.js';
+import sessionsRouter from './sessions.js';
+import authRouter from './auth.js';
+import cartsRouter from './carts.js';
+import realtimeeventsRouter from './realtimeevents.js';
+import registerRouter from './register.js';
 
 const router = express.Router();
-let visitCount = 0;
 
-// Renderizar vista principal con eventos
-router.get('/', async (req, res) => {
-    try {
-        const { category, search, date } = req.query;
-        let query = { status: 'activo' };
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Retrieve the home page
+ *     responses:
+ *       200:
+ *         description: Home page content
+ */
+router.use('/', homeRouter);
 
-        // Aplicar filtros si existen
-        if (category) {
-            query.category = category;
-        }
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Retrieve a list of users
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
+router.use('/users', usersRouter);
 
-        if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ];
-        }
+/**
+ * @swagger
+ * /sessions:
+ *   post:
+ *     summary: Log in a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.use('/sessions', sessionsRouter);
 
-        if (date) {
-            query.date = { $gte: new Date(date) };
-        }
+/**
+ * @swagger
+ * /auth:
+ *   post:
+ *     summary: Authenticate a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User authenticated successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.use('/auth', authRouter);
 
-        const events = await Event.find(query);
-        const categories = await Event.distinct('category');
+/**
+ * @swagger
+ * /carts:
+ *   get:
+ *     summary: Retrieve the user's cart
+ *     responses:
+ *       200:
+ *         description: User's cart
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 items:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/CartItem'
+ *       404:
+ *         description: Cart not found
+ */
+router.use('/carts', cartsRouter);
 
-        res.render('home', {
-            events,
-            categories,
-            filters: { category, search, date }
-        });
-    } catch (error) {
-        console.error('Error al obtener eventos:', error);
-        res.status(500).render('error', { 
-            message: 'Error al cargar los eventos' 
-        });
-    }
-});
+/**
+ * @swagger
+ * /realtimeevents:
+ *   get:
+ *     summary: Retrieve real-time events
+ *     responses:
+ *       200:
+ *         description: Real-time events data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Event'
+ */
+router.use('/realtimeevents', realtimeeventsRouter);
 
-// Ruta de login
-router.get('/login', (req, res) => {
-    res.render('login');
-});
-
-// Contador de visitas
-router.get('/visitas', (req, res) => {
-    visitCount++;
-    res.send(`Número de visitas: ${visitCount}`);
-});
-
-// Ruta para calcular
-router.get('/calculo-bloq', (req, res) => {
-    let sum = 0;
-    for (let i = 0; i <= 100000; i++) {
-        sum += i;
-    }
-    res.send(`La suma incremental de los números del 0 al 100000 es: ${sum}`);
-});
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Register a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ */
+router.use('/register', registerRouter);
 
 export default router;

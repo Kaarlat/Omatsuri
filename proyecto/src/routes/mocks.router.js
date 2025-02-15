@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcrypt';
-import User from '../dao/models/user.model.js';
-import Event from '../dao/models/event.model.js';
+import User from '../models/user.js';
+import Event from '../models/event.js';
 
 const router = Router();
 

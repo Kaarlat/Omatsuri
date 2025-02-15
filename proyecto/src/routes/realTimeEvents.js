@@ -1,5 +1,5 @@
 import express from 'express';
-import Evento from '../models/evento.js';
+import Evento from '../models/event.js';
 
 const router = express.Router();
 

@@ -17,13 +17,12 @@ router.get('/', async (req, res) => {
 
         const events = await Event.find(query)
             .sort({ date: 1 })
-            .lean(); // Convierte los documentos Mongoose a objetos JavaScript planos
-
+            .lean(); 
         res.render('home', {
             events,
             categories,
             selectedCategory: category || '',
-            user: req.user ? req.user.toObject() : null // Asegurarse de que el usuario también sea un objeto plano
+            user: req.user ? req.user.toObject() : null 
         });
     } catch (error) {
         console.error('Error al cargar eventos:', error);
